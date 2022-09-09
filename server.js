@@ -1,12 +1,23 @@
 const express = require("express")
 const cors = require("cors")
-const app = express()
 require("./server/config/mongoose.config")
+
+const app = express()
+// Middleware configuration
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
 require("./server/routes/product.routes")(app)
 
-app.listen(8000, () => {
-  console.log("You are listening on port 8000")
+const dotenv = require("dotenv")
+dotenv.config()
+
+const colors = require("colors")
+colors.enable()
+
+const PORT = process.env.PORT
+
+const server = app.listen(PORT, () => {
+  console.log(`You are listening on port ${server.address().port}`.cyan)
 })
