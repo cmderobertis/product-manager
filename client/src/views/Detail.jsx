@@ -37,7 +37,7 @@ const Detail = (props) => {
             <div className="row justify-content-between">
               <div className="col-auto">
                 <Link
-                  className="btn btn-primary"
+                  className="btn btn-success"
                   to={"/products/" + product._id + "/edit"}
                 >
                   Edit

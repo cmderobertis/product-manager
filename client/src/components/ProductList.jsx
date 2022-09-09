@@ -1,18 +1,18 @@
-import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import axios from "axios"
+import DeleteButton from "./DeleteButton"
 
-const ProductList = ({ products, removeFromDom }) => {
-  const navigate = useNavigate()
-
-  const deleteProduct = (productId) => {
+const ProductList = (props) => {
+  const [products, setProducts] = useState([])
+  useEffect(() => {
     axios
-      .delete("http://localhost:8000/api/products/" + productId)
-      .then((response) => {
-        removeFromDom(productId)
-        navigate("/")
-      })
-      .catch((error) => console.error(error))
+      .get("http://localhost:8000/api/products")
+      .then((response) => setProducts(response.data))
+  }, [])
+
+  const removeFromDom = (productId) => {
+    setProducts(products.filter((product) => product._id != productId))
   }
 
   return (
@@ -27,7 +27,7 @@ const ProductList = ({ products, removeFromDom }) => {
                   key={product._id}
                   className="row justify-content-between mt-3"
                 >
-                  <div className="col-auto">
+                  <div className="col text-start">
                     <Link
                       to={"./products/" + product._id}
                       className="btn btn-primary"
@@ -35,15 +35,19 @@ const ProductList = ({ products, removeFromDom }) => {
                       {product.title}
                     </Link>
                   </div>
-                  <div className="col-auto">
-                    <button
-                      className="btn btn-danger"
-                      onClick={(e) => {
-                        deleteProduct(product._id)
-                      }}
+                  <div className="col-3">
+                    <Link
+                      to={"./products/" + product._id + "/edit"}
+                      className="btn btn-success"
                     >
-                      Delete
-                    </button>
+                      Edit
+                    </Link>
+                  </div>
+                  <div className="col-3">
+                    <DeleteButton
+                      productId={product._id}
+                      successCallback={() => removeFromDom(product._id)}
+                    />
                   </div>
                 </div>
               )

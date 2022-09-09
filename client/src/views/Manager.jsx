@@ -21,9 +21,23 @@ const Manager = () => {
     setProducts(products.filter((p) => p._id != productId))
   }
 
+  const createProduct = (product) => {
+    axios
+      .post("http://localhost:8000/api/products", product)
+      .then((response) => {
+        setProducts([...products, response.data])
+      })
+  }
+
   return (
     <div>
-      <ProductForm setProducts={setProducts} products={products}></ProductForm>
+      <ProductForm
+        onSubmitProp={createProduct}
+        initialTitle=""
+        initialDescription=""
+        initialPrice=""
+        heading="Create Product"
+      ></ProductForm>
       {loaded && (
         <ProductList
           removeFromDom={removeFromDom}

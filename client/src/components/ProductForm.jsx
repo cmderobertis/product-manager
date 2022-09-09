@@ -1,34 +1,26 @@
 import axios from "axios"
+import React, { useState, useEffect } from "react"
 
-import React, { useState } from "react"
-
-const PersonForm = ({ products, setProducts }) => {
-  const [title, setTitle] = useState("")
-  const [price, setPrice] = useState("")
-  const [description, setDescription] = useState("")
+const ProductForm = ({
+  initialTitle,
+  initialPrice,
+  initialDescription,
+  onSubmitProp,
+  heading,
+}) => {
+  const [title, setTitle] = useState(initialTitle)
+  const [price, setPrice] = useState(initialPrice)
+  const [description, setDescription] = useState(initialDescription)
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
-    axios
-      .post("http://localhost:8000/api/products", {
-        title,
-        price,
-        description,
-      })
-      .then((res) => {
-        console.log(res)
-        setProducts([...products, res.data])
-        setTitle("")
-        setPrice("")
-        setDescription("")
-      })
-      .catch((err) => console.log(err))
+    onSubmitProp({ title, price, description })
   }
 
   return (
     <div className="card">
       <div className="card-body">
-        <h4>Create Product</h4>
+        <h4>{heading}</h4>
         <div className="card bg-light">
           <div className="card-body">
             <form onSubmit={onSubmitHandler}>
@@ -68,4 +60,4 @@ const PersonForm = ({ products, setProducts }) => {
   )
 }
 
-export default PersonForm
+export default ProductForm
