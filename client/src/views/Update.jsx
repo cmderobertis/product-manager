@@ -9,6 +9,7 @@ const Update = (props) => {
   const [loaded, setLoaded] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
+  const [errors, setErrors] = useState([])
 
   useEffect(() => {
     axios.get("http://localhost:8000/api/products/" + id).then((response) => {
@@ -22,7 +23,15 @@ const Update = (props) => {
       .put("http://localhost:8000/api/products/" + id, product)
       .then((response) => {
         console.log(response)
-        navigate("/")
+        navigate("/products/" + id)
+      })
+      .catch((err) => {
+        const errorResponse = err.response.data.errors
+        const errorArr = []
+        for (const key of Object.keys(errorResponse)) {
+          errorArr.push(errorResponse[key].message)
+        }
+        setErrors(errorArr)
       })
   }
 
@@ -36,6 +45,7 @@ const Update = (props) => {
             initialPrice={product.price}
             initialDescription={product.description}
             heading="Update Product"
+            errors={errors}
           />
           <p></p>
           <DeleteButton

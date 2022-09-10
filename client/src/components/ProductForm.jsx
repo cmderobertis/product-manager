@@ -1,5 +1,4 @@
-import axios from "axios"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 const ProductForm = ({
   initialTitle,
@@ -7,6 +6,7 @@ const ProductForm = ({
   initialDescription,
   onSubmitProp,
   heading,
+  errors,
 }) => {
   const [title, setTitle] = useState(initialTitle)
   const [price, setPrice] = useState(initialPrice)
@@ -24,6 +24,11 @@ const ProductForm = ({
         <div className="card bg-light">
           <div className="card-body">
             <form onSubmit={onSubmitHandler}>
+              {errors.map((err, idx) => (
+                <p key={idx} className="text-danger">
+                  {err}
+                </p>
+              ))}
               <p>
                 <label htmlFor="title">Title</label>
                 <br />

@@ -4,9 +4,7 @@ require("./server/config/mongoose.config")
 
 const app = express()
 // Middleware configuration
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(cors(), express.json(), express.urlencoded({ extended: true }))
 
 require("./server/routes/product.routes")(app)
 
